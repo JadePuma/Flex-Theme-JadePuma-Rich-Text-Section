@@ -3,9 +3,11 @@
 Rich Text section with improved defaults and store-wide font and font sizes
 Created by JadePuma
 Instructions - https://jadepuma.com/blogs/shopify-tutorials/improved-rich-text-section-for-flex-theme
-Last editted - 5/9/24
+Last editted - 8/6/24
 
 {% endcomment %}
+
+{% unless section.settings.hidesection == true and section.settings.text == blank %}
 
 {% liquid
   assign heading_color = section.settings.heading_color
@@ -156,6 +158,8 @@ Last editted - 5/9/24
   </div>
 </section>
 
+{% endunless %}
+
 {% schema %}
   {
     "name": "JP Rich text",
@@ -205,6 +209,11 @@ Last editted - 5/9/24
         "id": "text",
         "label": "Text",
         "default": "<p>Use this section to create some callout text on your page.</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "hidesection",
+        "label": "Hide section if text empty"
       },
       {
         "type": "select",
