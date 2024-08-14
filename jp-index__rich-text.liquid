@@ -12,10 +12,8 @@ Last editted - 8/9/24
 {% liquid
   assign heading_color = section.settings.heading_color
   assign heading_alignment = section.settings.heading_alignment
-  assign text_font = section.settings.text_font
   assign text_color = section.settings.text_color
   assign text_alignment = section.settings.text_alignment
-  assign text_size = section.settings.text_size
 
   # Is the color set to transparent?
   assign heading_alpha = heading_color | color_extract: 'alpha'
@@ -41,9 +39,6 @@ Last editted - 8/9/24
   {% if section.settings.mobile_alignment != 'none' %}
     text-align--mobile-{{ section.settings.mobile_alignment }}
   {% endif %}
-  {% if text_size > 35 %}
-    mobile-shrink-text
-  {% endif %}
 {%- endcapture -%}
 
 {% comment %} Section specific CSS {% endcomment %}
@@ -58,16 +53,11 @@ Last editted - 8/9/24
   }
 
   .rich-text__text {
-    font-size: {{ text_size }}px;
     color: {%- if text_alpha != 0 -%}{{ text_color }}{%- else -%}{{ settings.regular_color }}{%- endif -%};
-    font-family: {{ text_font.family }}, {{ text_font.fallback_families }};
-    font-weight: {{ text_font.weight }};
-    font-style: {{ text_font.style }};
   }
 {%- endcapture -%}
 
 {% style %}
-  {{ text_font | font_face }}
 
   #shopify-section-{{ section.id }} {
     padding-top: {{ section.settings.padding_top }}px;
@@ -164,7 +154,6 @@ Last editted - 8/9/24
   {
     "name": "JP Rich text",
     "class": "rich-text",
-    "templates":["index", "page", "article", "collection", "product", "cart", "blog"],
     "settings": [
       {
         "type": "paragraph",
@@ -212,7 +201,7 @@ Last editted - 8/9/24
         "type": "richtext",
         "id": "text",
         "label": "Text",
-        "default": "<p>Use this section to create some callout text on your page.</p>"
+        "default": "<p>Use this section to create some text on your page.<\/p>"
       },
       {
         "type": "checkbox",
@@ -325,12 +314,14 @@ Last editted - 8/9/24
       {
         "type": "color",
         "id": "background",
-        "label": "Background"
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
       },
       {
         "type": "color",
         "id": "gradient",
-        "label": "Background gradient"
+        "label": "Background gradient",
+        "default": "rgba(0,0,0,0)"
       },
       {
         "type": "range",
@@ -512,6 +503,10 @@ Last editted - 8/9/24
         "content": "Advanced"
       },
       {
+        "type": "paragraph",
+        "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+      },
+      {
         "type": "text",
         "id": "css_class",
         "label": "CSS Class"
@@ -525,11 +520,16 @@ Last editted - 8/9/24
     "presets": [
       {
         "name": "JP Rich text",
-        "category": "JadePuma",
+        "category": "Text",
         "settings": {
 
         }
       }
-    ]
+    ],
+    "disabled_on": {
+      "groups": [
+        "*"
+      ]
+    }
   }
 {% endschema %}
