@@ -2,7 +2,7 @@
   Rich Text section with improved defaults and store-wide font and font sizes
   Created by JadePuma
   Instructions - https://flexthemesections.com/pages/jp-rich-text
-  Last editted - 15Oct24
+  Last editted - 1Nov24
 {% endcomment %}
 
 {% unless section.settings.hidesection == true and section.settings.text == blank %}
@@ -16,8 +16,14 @@
     assign heading_alpha = heading_color | color_extract: 'alpha'
     assign text_alpha = text_color | color_extract: 'alpha'
     assign background_alpha = section.settings.background | color_extract: 'alpha'
-    assign gradient_alpha = section.settings.gradient | color_extract: 'alpha'
+    assign section-background_alpha = section.settings['section-background'] | color_extract: 'alpha'
   %}
+
+  {%- if section-background_alpha != 0 -%}
+    {% style %}
+      #shopify-section-{{ section.id }} { background-color:  {{ section.settings['section-background'] }}; }
+    {% endstyle %}
+  {%- endif -%}
 
   {%- capture heading_classes -%}
   rich-text__heading
@@ -41,7 +47,6 @@
   {% comment %} Section specific CSS {% endcomment %}
   {%- capture section_css -%}
   .section {
-    background-image: linear-gradient({{ section.settings.gradient_rotation }}deg, rgba(255,255,255,0), {{ section.settings.gradient }});
     background-color: {%- if background_alpha != 0 -%}{{ section.settings.background }}{%- endif -%};
   }
 
@@ -54,6 +59,8 @@
   }
     
     .content:not(:last-child) { margin-bottom: 0; }
+
+    .buttons { margin-top: 10px; margin-bottom: 10px; }
 
 {%- endcapture -%}
 
@@ -98,7 +105,7 @@
       section
       {{ section.settings.css_class }}
       is-width-{{ section.settings.width }}
-      {% if background_alpha != 0 or gradient_alpha != 0  %}
+      {% if background_alpha != 0 %}
         has-background
       {% endif %}
     "
@@ -152,7 +159,7 @@
 {% schema %}
 {
   "name": "JP Rich text",
-  "class": "rich-text",
+  "class": "jp-rich-text",
   "settings": [
     {
       "type": "paragraph",
@@ -312,25 +319,15 @@
     },
     {
       "type": "color",
-      "id": "background",
-      "label": "Background",
+      "id": "section-background",
+      "label": "Section Background",
       "default": "rgba(0,0,0,0)"
     },
     {
       "type": "color",
-      "id": "gradient",
-      "label": "Background gradient",
+      "id": "background",
+      "label": "Content Background",
       "default": "rgba(0,0,0,0)"
-    },
-    {
-      "type": "range",
-      "id": "gradient_rotation",
-      "label": "Gradient rotation",
-      "min": 0,
-      "max": 180,
-      "step": 10,
-      "default": 180,
-      "unit": "deg"
     },
     {
       "type": "header",
