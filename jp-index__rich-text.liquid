@@ -54,8 +54,14 @@
     color: {%- if heading_alpha != 0 -%}{{ heading_color }}{%- else -%}{{ settings.heading_color }}{%- endif -%};
   }
 
-  .rich-text__text {
-    color: {%- if text_alpha != 0 -%}{{ text_color }}{%- else -%}{{ settings.regular_color }}{%- endif -%};
+  .rich-text__text,
+  .rich-text__text p,
+  .rich-text__text span,
+  .rich-text__text strong,
+  .rich-text__text em,
+  .rich-text__text a,
+  .rich-text__text li {
+    color: {%- if text_alpha != 0 -%}{{ text_color }}{%- else -%}{{ settings.regular_color }}{%- endif -%} !important;
   }
     
     .content:not(:last-child) { margin-bottom: 0; }
